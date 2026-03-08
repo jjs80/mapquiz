@@ -12,6 +12,7 @@ interface WorldMapProps {
   highlightedCountryId?: string;
   highlightedCityId?: string;
   showCities?: boolean;
+  visibleCityIds?: string[];
   onCountryClick?: (iso: string) => void;
   onCityClick?: (cityId: string) => void;
 }
@@ -23,6 +24,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   highlightedCountryId,
   highlightedCityId,
   showCities = false,
+  visibleCityIds,
   onCountryClick,
   onCityClick,
 }) => {
@@ -179,6 +181,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
               zoomLevel={zoomLevel}
               highlightedCityId={highlightedCityId}
               hoveredCityId={hoveredCityId}
+              visibleCityIds={visibleCityIds}
               onCityClick={onCityClick}
               onMouseEnter={setHoveredCityId}
               onMouseLeave={() => setHoveredCityId(null)}

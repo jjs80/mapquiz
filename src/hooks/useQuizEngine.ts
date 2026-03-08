@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
-import { useQuizStore, type QuizQuestion } from '../store/quizStore';
+import { useQuizStore } from '../store/quizStore';
 import { useSettingsStore } from '../store/settingsStore';
 import {
   filterCountriesByRegionAndDifficulty,
   filterCitiesByRegionAndDifficulty,
+  filterCountriesByCustomSelection,
+  filterCitiesByCustomSelection,
 } from '../utils/filterByRegion';
 import { shuffle } from '../utils/shuffle';
 
@@ -13,43 +15,64 @@ export const useQuizEngine = () => {
     selectedRegions,
     difficulty,
     questionCount,
+    useCustomSelection,
+    selectedCountries,
+    selectedCities,
   } = useSettingsStore();
 
   const { startQuiz } = useQuizStore();
 
   // Generate quiz questions based on settings
   const quizQuestions = useMemo(() => {
-    if (mode === 'countries') {
-      const countries = filterCountriesByRegionAndDifficulty(
-        selectedRegions,
-        difficulty
-      );
+    let items: any[] = [];
 
-      const questions: QuizQuestion[] = countries.map((country) => ({
-        id: country.iso,
-        nameEn: country.nameEn,
-        nameFi: country.nameFi,
-      }));
-
-      const shuffled = shuffle(questions);
-      return shuffled.slice(0, questionCount);
+    if (useCustomSelection) {
+      // Custom selection mode
+      if (mode === 'countries') {
+        const countries = filterCountriesByCustomSelection(selectedCountries);
+        items = countries.map((country) => ({
+          id: country.iso,
+          nameEn: country.nameEn,
+          nameFi: country.nameFi,
+        }));
+      } else {
+        // cities mode
+        const cities = filterCitiesByCustomSelection(selectedCountries, selectedCities);
+        items = cities.map((city) => ({
+          id: city.id,
+          nameEn: city.nameEn,
+          nameFi: city.nameFi,
+        }));
+      }
     } else {
-      // cities mode
-      const cities = filterCitiesByRegionAndDifficulty(
-        selectedRegions,
-        difficulty
-      );
-
-      const questions: QuizQuestion[] = cities.map((city) => ({
-        id: city.id,
-        nameEn: city.nameEn,
-        nameFi: city.nameFi,
-      }));
-
-      const shuffled = shuffle(questions);
-      return shuffled.slice(0, questionCount);
+      // Region-based selection mode
+      if (mode === 'countries') {
+        const countries = filterCountriesByRegionAndDifficulty(
+          selectedRegions,
+          difficulty
+        );
+        items = countries.map((country) => ({
+          id: country.iso,
+          nameEn: country.nameEn,
+          nameFi: country.nameFi,
+        }));
+      } else {
+        // cities mode
+        const cities = filterCitiesByRegionAndDifficulty(
+          selectedRegions,
+          difficulty
+        );
+        items = cities.map((city) => ({
+          id: city.id,
+          nameEn: city.nameEn,
+          nameFi: city.nameFi,
+        }));
+      }
     }
-  }, [mode, selectedRegions, difficulty, questionCount]);
+
+    const shuffled = shuffle(items);
+    return shuffled.slice(0, questionCount);
+  }, [mode, selectedRegions, difficulty, questionCount, useCustomSelection, selectedCountries, selectedCities]);
 
   const initializeQuiz = () => {
     startQuiz(quizQuestions);

@@ -75,3 +75,32 @@ export const getAllRegions = (): string[] => {
   const regions = new Set(countries.map((c) => c.region));
   return Array.from(regions);
 };
+
+/**
+ * Filter countries by custom selection (hand-picked ISO codes)
+ */
+export const filterCountriesByCustomSelection = (
+  selectedCountries: string[]
+): Country[] => {
+  const countries = countriesData as Country[];
+  const selectedSet = new Set(selectedCountries);
+
+  return countries.filter((country) => selectedSet.has(country.iso));
+};
+
+/**
+ * Filter cities by custom selection (hand-picked countries and cities)
+ */
+export const filterCitiesByCustomSelection = (
+  selectedCountries: string[],
+  selectedCities: string[]
+): City[] => {
+  const cities = citiesData as City[];
+  const selectedCountrySet = new Set(selectedCountries);
+  const selectedCitySet = new Set(selectedCities);
+
+  return cities.filter(
+    (city) =>
+      selectedCountrySet.has(city.countryIso) && selectedCitySet.has(city.id)
+  );
+};

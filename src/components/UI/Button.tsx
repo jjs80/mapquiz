@@ -12,6 +12,7 @@ export const Button: React.FC<ButtonProps> = ({
   size = 'md',
   fullWidth = false,
   className = '',
+  disabled = false,
   children,
   ...props
 }) => {
@@ -30,10 +31,12 @@ export const Button: React.FC<ButtonProps> = ({
 
   const baseClasses = 'rounded font-medium transition-colors duration-200';
   const widthClass = fullWidth ? 'w-full' : '';
+  const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : '';
 
   return (
     <button
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${className}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${disabledClass} ${className}`}
+      disabled={disabled}
       {...props}
     >
       {children}

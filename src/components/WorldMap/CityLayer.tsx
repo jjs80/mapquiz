@@ -18,6 +18,7 @@ interface CityLayerProps {
   zoomLevel?: number;
   highlightedCityId?: string;
   hoveredCityId?: string | null;
+  visibleCityIds?: string[];
   onCityClick?: (cityId: string) => void;
   onMouseEnter?: (cityId: string) => void;
   onMouseLeave?: () => void;
@@ -28,15 +29,24 @@ export const CityLayer: React.FC<CityLayerProps> = ({
   zoomLevel = 1,
   highlightedCityId,
   hoveredCityId,
+  visibleCityIds,
   onCityClick,
   onMouseEnter,
   onMouseLeave,
 }) => {
   const cities = useMemo(() => citiesData as City[], []);
+  const visibleCitySet = useMemo(
+    () => (visibleCityIds ? new Set(visibleCityIds) : null),
+    [visibleCityIds]
+  );
 
   return (
     <g className="city-layer">
       {cities.map((city) => {
+        // Skip cities not in the visible set
+        if (visibleCitySet && !visibleCitySet.has(city.id)) {
+          return null;
+        }
         const [x, y] = projection([city.lon, city.lat]) || [0, 0];
         
         if (x === null || y === null) return null;

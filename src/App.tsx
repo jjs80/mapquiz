@@ -34,6 +34,8 @@ function App() {
     nextQuestion,
   } = useQuizStore();
 
+  const { useCustomSelection, selectedCities } = useSettingsStore();
+
   const { initializeQuiz } = useQuizEngine();
 
   // Load world topology data
@@ -204,6 +206,7 @@ function App() {
               }
               highlightedCityId={mode === 'cities' ? highlightedId : undefined}
               showCities={mode === 'cities'}
+              visibleCityIds={useCustomSelection && selectedCities.length > 0 ? selectedCities : undefined}
               onCountryClick={handleCountryClick}
               onCityClick={handleCityClick}
             />
