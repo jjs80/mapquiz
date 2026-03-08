@@ -1,0 +1,32 @@
+[
+  {
+    "id": "europe",
+    "labelEn": "Europe",
+    "labelFi": "Eurooppa",
+    "subregions": ["northern-europe", "western-europe", "central-europe", "eastern-europe", "southern-europe"]
+  },
+  {
+    "id": "asia",
+    "labelEn": "Asia",
+    "labelFi": "Aasia",
+    "subregions": ["eastern-asia", "central-asia", "southern-asia", "southeastern-asia", "western-asia"]
+  },
+  {
+    "id": "africa",
+    "labelEn": "Africa",
+    "labelFi": "Afrikka",
+    "subregions": ["northern-africa", "western-africa", "middle-africa", "eastern-africa", "southern-africa"]
+  },
+  {
+    "id": "americas",
+    "labelEn": "Americas",
+    "labelFi": "Amerikka",
+    "subregions": ["northern-america", "central-america", "south-america", "caribbean"]
+  },
+  {
+    "id": "oceania",
+    "labelEn": "Oceania",
+    "labelFi": "Oseania",
+    "subregions": ["oceania"]
+  }
+]
