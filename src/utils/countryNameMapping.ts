@@ -110,18 +110,7 @@ export function getIsoCode(countryName: string): string | undefined {
   
   const normalized = countryName.toLowerCase().trim();
   
-  // Check direct mapping first
-  if (worldAtlasToIso[normalized]) {
-    return worldAtlasToIso[normalized];
-  }
-  
-  // Check if it's mostly a match with minor variations
-  // (this helps with names like "St. Vincent and the Grenadines" vs "St Vincent and the Grenadines")
-  for (const [mapName, iso] of Object.entries(worldAtlasToIso)) {
-    if (mapName.includes(normalized) || normalized.includes(mapName)) {
-      return iso;
-    }
-  }
-  
-  return undefined;
+  // Check direct mapping only — no fuzzy/substring matching to avoid false positives
+  // (e.g. "ireland" must NOT match "northern ireland", "sudan" must NOT match "south sudan")
+  return worldAtlasToIso[normalized];
 }
